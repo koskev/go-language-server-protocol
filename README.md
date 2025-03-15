@@ -1,5 +1,7 @@
 # Modularised project
 
+Currently copied from 3e1371fd1
+
 > **!!! WARNING !!!**
 >
 > The [`modularise`](https://github.com/modularise/modularise) tool that is used to
