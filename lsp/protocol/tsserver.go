@@ -37,6 +37,8 @@ type Server interface {
 	SetTrace(context.Context, *SetTraceParams) error
 	LogTrace(context.Context, *LogTraceParams) error
 	Implementation(context.Context, *ImplementationParams) (Definition /*Definition | DefinitionLink[] | null*/, error)
+	 // See https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification#textDocument_inlayHint
+	InlayHint(context.Context, *InlayHintParams) ([]InlayHint, error)
 	TypeDefinition(context.Context, *TypeDefinitionParams) (Definition /*Definition | DefinitionLink[] | null*/, error)
 	DocumentColor(context.Context, *DocumentColorParams) ([]ColorInformation, error)
 	ColorPresentation(context.Context, *ColorPresentationParams) ([]ColorPresentation, error)
@@ -206,6 +208,17 @@ func serverDispatch(ctx context.Context, server Server, reply jsonrpc2.Replier, 
 		}
 		resp, err := server.Implementation(ctx, &params)
 		return true, reply(ctx, resp, err)
+			case "textDocument/inlayHint":
+		var params InlayHintParams
+		if err := json.Unmarshal(r.Params(), &params); err != nil {
+			return true, sendParseError(ctx, reply, err)
+		}
+		resp, err := server.InlayHint(ctx, &params)
+		if err != nil {
+			return true, reply(ctx, nil, err)
+		}
+		return true, reply(ctx, resp, nil)
+
 	case "textDocument/typeDefinition":	// req
 		var params TypeDefinitionParams
 		if err := json.Unmarshal(r.Params(), &params); err != nil {
@@ -619,6 +632,14 @@ func (s *serverDispatcher) LogTrace(ctx context.Context, params *LogTraceParams)
 func (s *serverDispatcher) Implementation(ctx context.Context, params *ImplementationParams) (Definition /*Definition | DefinitionLink[] | null*/, error) {
 	var result Definition	/*Definition | DefinitionLink[] | null*/
 	if err := s.sender.Call(ctx, "textDocument/implementation", params, &result); err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (s *serverDispatcher) InlayHint(ctx context.Context, params *InlayHintParams) ([]InlayHint, error) {
+	var result []InlayHint
+	if err := s.sender.Call(ctx, "textDocument/inlayHint", params, &result); err != nil {
 		return nil, err
 	}
 	return result, nil
