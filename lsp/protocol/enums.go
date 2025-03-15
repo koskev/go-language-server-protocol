@@ -9,27 +9,24 @@ import (
 )
 
 var (
-	namesTextDocumentSyncKind	[int(Incremental) + 1]string
-	namesInitializeError		[int(UnknownProtocolVersion) + 1]string
-	namesMessageType		[int(Log) + 1]string
-	namesFileChangeType		[int(Deleted) + 1]string
-	namesWatchKind			[int(WatchDelete) + 1]string
-	namesCompletionTriggerKind	[int(TriggerForIncompleteCompletions) + 1]string
-	namesDiagnosticSeverity		[int(SeverityHint) + 1]string
-	namesDiagnosticTag		[int(Unnecessary) + 1]string
-	namesCompletionItemKind		[int(TypeParameterCompletion) + 1]string
-	namesInsertTextFormat		[int(SnippetTextFormat) + 1]string
-	namesDocumentHighlightKind	[int(Write) + 1]string
-	namesSymbolKind			[int(TypeParameter) + 1]string
-	namesTextDocumentSaveReason	[int(FocusOut) + 1]string
+	namesTextDocumentSyncKind   [int(Incremental) + 1]string
+	namesMessageType            [int(Log) + 1]string
+	namesFileChangeType         [int(Deleted) + 1]string
+	namesWatchKind              [int(WatchDelete) + 1]string
+	namesCompletionTriggerKind  [int(TriggerForIncompleteCompletions) + 1]string
+	namesDiagnosticSeverity     [int(SeverityHint) + 1]string
+	namesDiagnosticTag          [int(Unnecessary) + 1]string
+	namesCompletionItemKind     [int(TypeParameterCompletion) + 1]string
+	namesInsertTextFormat       [int(SnippetTextFormat) + 1]string
+	namesDocumentHighlightKind  [int(Write) + 1]string
+	namesSymbolKind             [int(TypeParameter) + 1]string
+	namesTextDocumentSaveReason [int(FocusOut) + 1]string
 )
 
 func init() {
 	namesTextDocumentSyncKind[int(None)] = "None"
 	namesTextDocumentSyncKind[int(Full)] = "Full"
 	namesTextDocumentSyncKind[int(Incremental)] = "Incremental"
-
-	namesInitializeError[int(UnknownProtocolVersion)] = "UnknownProtocolVersion"
 
 	namesMessageType[int(Error)] = "Error"
 	namesMessageType[int(Warning)] = "Warning"
@@ -149,14 +146,6 @@ func ParseTextDocumentSyncKind(s string) TextDocumentSyncKind {
 	return TextDocumentSyncKind(parseEnum(s, namesTextDocumentSyncKind[:]))
 }
 
-func (e InitializeError) Format(f fmt.State, c rune) {
-	formatEnum(f, c, int(e), namesInitializeError[:], "InitializeError")
-}
-
-func ParseInitializeError(s string) InitializeError {
-	return InitializeError(parseEnum(s, namesInitializeError[:]))
-}
-
 func (e MessageType) Format(f fmt.State, c rune) {
 	formatEnum(f, c, int(e), namesMessageType[:], "MessageType")
 }
@@ -171,10 +160,6 @@ func (e FileChangeType) Format(f fmt.State, c rune) {
 
 func ParseFileChangeType(s string) FileChangeType {
 	return FileChangeType(parseEnum(s, namesFileChangeType[:]))
-}
-
-func (e WatchKind) Format(f fmt.State, c rune) {
-	formatEnum(f, c, int(e), namesWatchKind[:], "WatchKind")
 }
 
 func ParseWatchKind(s string) WatchKind {
